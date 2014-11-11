@@ -1,0 +1,27 @@
+teaspoon,teaspoons
+tablespoon,tablespoons
+fluid oz.,fluid oz.
+oz.,oz.
+pound,pounds
+cup,cups
+quart,quarts
+pint,pints
+ml,ml
+liter,liters
+gallon,gallons
+dash,dashes
+pinch,pinches
+coffee scoop,coffee scoops
+gram,grams
+cake pan,cake pans
+dessertspoon,dessertspoons
+cook's cup,cook's cups
+coffee cup,coffee cups
+fluid oz. (UK),fluid oz. (UK)
+drop,drops
+gill,gills
+fifth,fifths
+dry pint,dry pints
+peck,pecks
+bushel,bushels
+smidgen,smidgens

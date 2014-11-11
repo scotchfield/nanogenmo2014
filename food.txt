@@ -1,0 +1,158 @@
+Asparagus
+Apple
+Avocado
+Alfalfa
+Acorn Squash
+Almonds
+Arugula
+Artichoke
+Applesauce
+Antelope
+Albacore Tuna
+Apple Juice
+Avocado Roll
+Bruschetta
+Bacon
+Black Beans
+Bagel
+Baked Beans
+Banana
+Bison
+Barley
+Beef
+Beer
+Bisque
+Blackberry
+Blueberry
+Bluefish
+Brandy
+Bread
+Broccoli
+Burrito
+Baba Ghanoush
+Cabbage
+Cake
+Carrots
+Carne Asada
+Celery
+Cheese
+Cherries
+Chicken
+Catfish
+Chips
+Chocolate
+Chowder
+Clam
+Coconut
+Coffee
+Cookie
+Corn
+Cottage Cheese
+Cupcake
+Crab
+Curry
+Cereal
+Chimichanga
+Dates
+Dips
+Duck
+Dumpling
+Donut
+Eggs
+Enchilada
+Egg Roll
+English Muffin
+Edimame
+Eel Sushi
+Fajita
+Falafel
+Fish
+Franks
+Fondue
+French Dip
+French Fry
+French Toast
+Garlic
+Ginger
+Gnocchi
+Goose
+Granola
+Grapes
+Green Beans
+Guacamole
+Gumbo
+Grits
+Graham Crackers
+Ham
+Halibut
+Hamburger
+Honey
+Huevos Rancheros
+Hash Browns
+Hot Dogs
+Hummus
+Ice Cream
+Irish Stew
+Indian Food
+Italian Bread
+Jam
+Jambalaya
+Jelly
+Jerky
+Jalapeño
+Kale
+Kabobs
+Ketchup
+Kiwi
+Kidney Beans
+Kingfish
+Lobster
+Lamb
+Linguine
+Lasagna
+Mango
+Meatballs
+Moose
+Milk
+Milkshake
+Mushrooms
+Nectarines
+Noodles
+Oatmeal
+Olives
+Onions
+Orange
+Ostrich
+Pancakes
+Pear
+Pine Nuts
+Pizza
+Pepperoni
+Porter
+Potato
+Quesadilla
+Quiche
+Radishes
+Ramen Noodles
+Raspberries
+Red Pepper
+Refried Beans
+Reuben
+Sandwich
+Spinach
+Spaghetti
+Strawberries
+Tater Tots
+Toast
+Tortilla
+Tuna
+Udon Noodles
+Unagi
+Vanilla
+Venison
+Waffles
+Wine
+Walnuts
+Yam
+Yogurt
+Zucchini
