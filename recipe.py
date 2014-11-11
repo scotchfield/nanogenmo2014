@@ -71,24 +71,26 @@ output_file = open( 'recipe.html', 'w' )
 output_file.write( "<html><head><title>Delicious Recipes</title></head>\n" )
 output_file.write( "<body>\n" )
 
-for i in range( 5 ):
+for i in range( 100 ):
     food = getFood( prefix_obj, food_obj, suffix_obj )
 
-    photo_obj = getPhotos( flickr, food[ 0 ] )
-    if 0 == len( photo_obj ):
-        print( 'No photos found for {0}!'.format( food[ 0 ] ) )
-        continue
-
-    photo = random.choice( photo_obj )
-
-    url_filename = '{0}_{1}.jpg'.format( photo[ 'id' ], photo[ 'secret' ] )
-    url = 'https://farm{0}.staticflickr.com/{1}/{2}'.format(
-        photo[ 'farm' ], photo[ 'server' ], url_filename )
-
-    getFile( url, url_filename )
-
     output_file.write( '<h1>{0}</h1>'.format( food[ 1 ] ) )
-    output_file.write( '<img src="cache/{0}">'.format( url_filename ) )
+
+    if len( api_key ) > 0:
+        photo_obj = getPhotos( flickr, food[ 0 ] )
+        if 0 == len( photo_obj ):
+            print( 'No photos found for {0}!'.format( food[ 0 ] ) )
+            continue
+
+        photo = random.choice( photo_obj )
+
+        url_filename = '{0}_{1}.jpg'.format( photo[ 'id' ], photo[ 'secret' ] )
+        url = 'https://farm{0}.staticflickr.com/{1}/{2}'.format(
+            photo[ 'farm' ], photo[ 'server' ], url_filename )
+
+        getFile( url, url_filename )
+
+        output_file.write( '<img src="cache/{0}">'.format( url_filename ) )
 
     print( food[ 1 ] )
     print( '--------' )
