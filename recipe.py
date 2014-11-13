@@ -55,6 +55,38 @@ def getIngredient( food_obj, measure_obj, quantity_obj ):
 
     return ( food, amount )
 
+def getRecipe( prefix_obj, food_obj, suffix_obj, measure_obj, quantity_obj,
+               combine_obj ):
+    food = getFood( prefix_obj, food_obj, suffix_obj )
+
+    ig_obj = []
+    for i in range( random.randint( 5, 20 ) ):
+        ig_obj.append(
+            getIngredient( food_obj, measure_obj, quantity_obj ) )
+
+    random.shuffle( ig_obj )
+    instructions = []
+
+    while ig_obj:
+        combine = random.choice( combine_obj )
+        if len( ig_obj ) < 2 and combine.find( '{1}' ) > -1:
+            continue
+
+        combine_ig = []
+
+        if combine.find( '{1}' ) > -1:
+            combine_ig.append( ig_obj.pop()[ 0 ].lower() )
+        if combine.find( '{0}' ) > -1:
+            combine_ig.append( ig_obj.pop()[ 0 ].lower() )
+
+        while len( combine_ig ) < 2:
+            combine_ig.append( '' )
+
+        c = combine.format( combine_ig[ 0 ], combine_ig[ 1 ] )
+        instructions.append( c )
+
+    return ( food, ig_obj, instructions )
+
 def writeHtml( param_obj, output_filename, n ):
     ( flickr, prefix_obj, food_obj, suffix_obj, measure_obj,
         quantity_obj, combine_obj, api_key ) = param_obj
@@ -64,7 +96,9 @@ def writeHtml( param_obj, output_filename, n ):
     output_file.write( "</head>\n<body>\n" )
 
     for i in range( n ):
-        food = getFood( prefix_obj, food_obj, suffix_obj )
+        ( food, ig_obj, instructions ) = getRecipe(
+            prefix_obj, food_obj, suffix_obj, measure_obj,
+            quantity_obj, combine_obj )
 
         output_file.write( "<h1>{0}</h1>\n".format( food[ 1 ] ) )
 
@@ -88,40 +122,12 @@ def writeHtml( param_obj, output_filename, n ):
         print( food[ 1 ] )
         print( '--------' )
 
-        ig_obj = []
-        for i in range( random.randint( 5, 20 ) ):
-            ig_obj.append( getIngredient(
-                    food_obj, measure_obj, quantity_obj ) )
         ig_obj.sort()
-
         output_file.write( '<ul>' )
         for ig in ig_obj:
             output_file.write( '<li>{0} {1}</li>'.format( ig[ 1 ], ig[ 0 ] ) )
             print( '{0} {1}'.format( ig[ 1 ], ig[ 0 ] ) )
         output_file.write( '</ul>' )
-
-        random.shuffle( ig_obj )
-
-        instructions = []
-
-        while ig_obj:
-            combine = random.choice( combine_obj )
-            if len( ig_obj ) < 2 and combine.find( '{1}' ) > -1:
-                continue
-
-            combine_ig = []
-
-            if combine.find( '{1}' ) > -1:
-                combine_ig.append( ig_obj.pop()[ 0 ].lower() )
-            if combine.find( '{0}' ) > -1:
-                combine_ig.append( ig_obj.pop()[ 0 ].lower() )
-
-            while len( combine_ig ) < 2:
-                combine_ig.append( '' )
-
-            c = combine.format( combine_ig[ 0 ], combine_ig[ 1 ] )
-
-            instructions.append( c )
 
         output_file.write( "<p>{0}</p>\n".format( ' '.join( instructions ) ) )
         print( ' '.join( instructions ) )
@@ -129,19 +135,24 @@ def writeHtml( param_obj, output_filename, n ):
     output_file.write( '</body>' )
 
 
-prefix_obj = getListFromFile( 'prefix.txt' )
-food_obj = getListFromFile( 'food.txt' )
-suffix_obj = getListFromFile( 'suffix.txt' )
-measure_obj = getListFromFile( 'measure.txt' )
-quantity_obj = getListFromFile( 'quantity.txt' )
-combine_obj = getListFromFile( 'combine.txt' )
+def main():
+    prefix_obj = getListFromFile( 'prefix.txt' )
+    food_obj = getListFromFile( 'food.txt' )
+    suffix_obj = getListFromFile( 'suffix.txt' )
+    measure_obj = getListFromFile( 'measure.txt' )
+    quantity_obj = getListFromFile( 'quantity.txt' )
+    combine_obj = getListFromFile( 'combine.txt' )
 
-api_key = u''
-api_secret = u''
+    api_key = u''
+    api_secret = u''
 
-flickr = flickrapi.FlickrAPI( api_key, api_secret, format='parsed-json' )
+    flickr = flickrapi.FlickrAPI( api_key, api_secret, format='parsed-json' )
 
-param_obj = ( flickr, prefix_obj, food_obj, suffix_obj, measure_obj,
-    quantity_obj, combine_obj, api_key )
+    param_obj = ( flickr, prefix_obj, food_obj, suffix_obj, measure_obj,
+                  quantity_obj, combine_obj, api_key )
 
-writeHtml( param_obj, 'recipe50k.html', 500 )
+    writeHtml( param_obj, 'new_recipe.html', 2 )
+
+
+if __name__ == "__main__":
+    main()
