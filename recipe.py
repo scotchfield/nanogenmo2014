@@ -55,6 +55,80 @@ def getIngredient( food_obj, measure_obj, quantity_obj ):
 
     return ( food, amount )
 
+def writeHtml( param_obj, output_filename, n ):
+    ( flickr, prefix_obj, food_obj, suffix_obj, measure_obj,
+        quantity_obj, combine_obj, api_key ) = param_obj
+
+    output_file = open( output_filename, 'w' )
+    output_file.write( "<html><head><title>Delicious Recipes</title>" )
+    output_file.write( "</head>\n<body>\n" )
+
+    for i in range( n ):
+        food = getFood( prefix_obj, food_obj, suffix_obj )
+
+        output_file.write( "<h1>{0}</h1>\n".format( food[ 1 ] ) )
+
+        if len( api_key ) > 0:
+            photo_obj = getPhotos( flickr, food[ 0 ] )
+            if 0 == len( photo_obj ):
+                print( 'No photos found for {0}!'.format( food[ 0 ] ) )
+                continue
+
+            photo = random.choice( photo_obj )
+
+            url_filename = '{0}_{1}.jpg'.format(
+                photo[ 'id' ], photo[ 'secret' ] )
+            url = 'https://farm{0}.staticflickr.com/{1}/{2}'.format(
+                photo[ 'farm' ], photo[ 'server' ], url_filename )
+
+            getFile( url, url_filename )
+
+            output_file.write( '<img src="cache/{0}">'.format( url_filename ) )
+
+        print( food[ 1 ] )
+        print( '--------' )
+
+        ig_obj = []
+        for i in range( random.randint( 5, 20 ) ):
+            ig_obj.append( getIngredient(
+                    food_obj, measure_obj, quantity_obj ) )
+        ig_obj.sort()
+
+        output_file.write( '<ul>' )
+        for ig in ig_obj:
+            output_file.write( '<li>{0} {1}</li>'.format( ig[ 1 ], ig[ 0 ] ) )
+            print( '{0} {1}'.format( ig[ 1 ], ig[ 0 ] ) )
+        output_file.write( '</ul>' )
+
+        random.shuffle( ig_obj )
+
+        instructions = []
+
+        while ig_obj:
+            combine = random.choice( combine_obj )
+            if len( ig_obj ) < 2 and combine.find( '{1}' ) > -1:
+                continue
+
+            combine_ig = []
+
+            if combine.find( '{1}' ) > -1:
+                combine_ig.append( ig_obj.pop()[ 0 ].lower() )
+            if combine.find( '{0}' ) > -1:
+                combine_ig.append( ig_obj.pop()[ 0 ].lower() )
+
+            while len( combine_ig ) < 2:
+                combine_ig.append( '' )
+
+            c = combine.format( combine_ig[ 0 ], combine_ig[ 1 ] )
+
+            instructions.append( c )
+
+        output_file.write( "<p>{0}</p>\n".format( ' '.join( instructions ) ) )
+        print( ' '.join( instructions ) )
+
+    output_file.write( '</body>' )
+
+
 prefix_obj = getListFromFile( 'prefix.txt' )
 food_obj = getListFromFile( 'food.txt' )
 suffix_obj = getListFromFile( 'suffix.txt' )
@@ -67,69 +141,7 @@ api_secret = u''
 
 flickr = flickrapi.FlickrAPI( api_key, api_secret, format='parsed-json' )
 
-output_file = open( 'recipe.html', 'w' )
-output_file.write( "<html><head><title>Delicious Recipes</title></head>\n" )
-output_file.write( "<body>\n" )
+param_obj = ( flickr, prefix_obj, food_obj, suffix_obj, measure_obj,
+    quantity_obj, combine_obj, api_key )
 
-for i in range( 100 ):
-    food = getFood( prefix_obj, food_obj, suffix_obj )
-
-    output_file.write( '<h1>{0}</h1>'.format( food[ 1 ] ) )
-
-    if len( api_key ) > 0:
-        photo_obj = getPhotos( flickr, food[ 0 ] )
-        if 0 == len( photo_obj ):
-            print( 'No photos found for {0}!'.format( food[ 0 ] ) )
-            continue
-
-        photo = random.choice( photo_obj )
-
-        url_filename = '{0}_{1}.jpg'.format( photo[ 'id' ], photo[ 'secret' ] )
-        url = 'https://farm{0}.staticflickr.com/{1}/{2}'.format(
-            photo[ 'farm' ], photo[ 'server' ], url_filename )
-
-        getFile( url, url_filename )
-
-        output_file.write( '<img src="cache/{0}">'.format( url_filename ) )
-
-    print( food[ 1 ] )
-    print( '--------' )
-
-    ig_obj = []
-    for i in range( random.randint( 5, 20 ) ):
-        ig_obj.append( getIngredient( food_obj, measure_obj, quantity_obj ) )
-    ig_obj.sort()
-
-    output_file.write( '<ul>' )
-    for ig in ig_obj:
-        output_file.write( '<li>{0} {1}</li>'.format( ig[ 1 ], ig[ 0 ] ) )
-        print( '{0} {1}'.format( ig[ 1 ], ig[ 0 ] ) )
-    output_file.write( '</ul>' )
-
-    random.shuffle( ig_obj )
-
-    instructions = []
-
-    while ig_obj:
-        combine = random.choice( combine_obj )
-        if len( ig_obj ) < 2 and combine.find( '{1}' ) > -1:
-            continue
-
-        combine_ig = []
-
-        if combine.find( '{1}' ) > -1:
-            combine_ig.append( ig_obj.pop()[ 0 ].lower() )
-        if combine.find( '{0}' ) > -1:
-            combine_ig.append( ig_obj.pop()[ 0 ].lower() )
-
-        while len( combine_ig ) < 2:
-            combine_ig.append( '' )
-
-        c = combine.format( combine_ig[ 0 ], combine_ig[ 1 ] )
-
-        instructions.append( c )
-
-    output_file.write( '<p>{0}</p>'.format( ' '.join( instructions ) ) )
-    print( ' '.join( instructions ) )
-
-output_file.write( '</body>' )
+writeHtml( param_obj, 'recipe50k.html', 500 )
