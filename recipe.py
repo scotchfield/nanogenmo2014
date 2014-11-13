@@ -64,6 +64,8 @@ def getRecipe( prefix_obj, food_obj, suffix_obj, measure_obj, quantity_obj,
         ig_obj.append(
             getIngredient( food_obj, measure_obj, quantity_obj ) )
 
+    ig_backup = ig_obj[ : ]
+
     random.shuffle( ig_obj )
     instructions = []
 
@@ -85,7 +87,7 @@ def getRecipe( prefix_obj, food_obj, suffix_obj, measure_obj, quantity_obj,
         c = combine.format( combine_ig[ 0 ], combine_ig[ 1 ] )
         instructions.append( c )
 
-    return ( food, ig_obj, instructions )
+    return ( food, ig_backup, instructions )
 
 def writeHtml( param_obj, output_filename, n ):
     ( flickr, prefix_obj, food_obj, suffix_obj, measure_obj,
